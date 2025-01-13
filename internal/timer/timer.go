@@ -39,7 +39,6 @@ func (t *Timer) Start(ctx context.Context) {
 				case <-ctx.Done():
 					timer.Stop()
 					ticker.Stop()
-					fmt.Println("Timer stopped")
 				case <-timer.C:
 					t.Notifier.Notify(notificationMessages[i])
 					break innerloop
