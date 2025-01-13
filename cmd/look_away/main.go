@@ -13,7 +13,6 @@ import (
 	"os/signal"
 	"path/filepath"
 	"syscall"
-	"time"
 
 	"gopkg.in/yaml.v3"
 )
@@ -48,6 +47,7 @@ func main() {
 	var customBreakDuration int
 	var customUseAlert *bool
 	var showConfigLocation bool
+	var printConfig bool
 	var help bool
 
 	flag.StringVar(&customConfigPath, "config", "$HOME/.config/look_away/config.yml", "Path to the yaml config file")
@@ -55,6 +55,7 @@ func main() {
 	flag.IntVar(&customBreakDuration, "break-duration", 0, "Break duration in seconds (overrides config)")
 	customUseAlert = flag.Bool("alert", false, "Use alert instead of notification (overrides config)")
 	flag.BoolVar(&showConfigLocation, "config-path", false, "Print default config location")
+	flag.BoolVar(&printConfig, "print-config", false, "Print the current configuration")
 	flag.BoolVar(&help, "help", false, "Show help message")
 	flag.BoolVar(&help, "h", false, "Show help message")
 
@@ -70,6 +71,7 @@ func main() {
 		fmt.Println("  --break-duration  Break duration in seconds (Optional, overrides config)")
 		fmt.Println("  --alert           Use alert instead of notification (Optional, overrides config)")
 		fmt.Println("  --config-path     Print default config location")
+		fmt.Println("  --print-config    Print the current configuration")
 		fmt.Println("  --help, -h        Show this help message")
 		fmt.Println("\nExample: look_away -duration=25 -break_duration=30 -alert=false")
 		return
@@ -77,6 +79,16 @@ func main() {
 
 	if showConfigLocation {
 		fmt.Println(configPath)
+		return
+	}
+	
+	if printConfig {
+		data, err := yaml.Marshal(cfg)
+		if err != nil {
+			log.Fatalf("Error printing config", err)
+		}
+
+		fmt.Println(string(data))
 		return
 	}
 
