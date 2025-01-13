@@ -1,6 +1,0 @@
-timer:
-  duration_minutes: 20
-  break_seconds: 20
-
-notifications:
-  use_alert: false

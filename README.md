@@ -29,4 +29,28 @@ source ~/.zshrc  # or source ~/.bashrc
 look_away
 ```
 
+To get help use:
+
+```sh
+look_away --help
+```
+
+## Config
+
+The tool can be configured using a yaml file. The default config is created on first run, and looks like this:
+
+```yaml
+timer:
+    duration_minutes: 20
+    break_seconds: 20
+notifications:
+    use_alert: false
+```
+
+To find your default config location type:
+
+```sh
+look_away --config-location
+```
+
 Tested only on Mac and Linux.
