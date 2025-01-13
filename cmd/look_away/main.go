@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"flag"
 	"fmt"
@@ -12,6 +13,7 @@ import (
 	"os/signal"
 	"path/filepath"
 	"syscall"
+	"time"
 
 	"gopkg.in/yaml.v3"
 )
@@ -91,16 +93,20 @@ func main() {
 	notifier := notifications.NewNotifier(cfg.Notifications)
 	t := timer.NewTimer(cfg.GetTimerDuration(), cfg.GetBreakSeconds(), notifier)
 
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	quitChan := make(chan os.Signal, 1)
 	signal.Notify(quitChan, syscall.SIGINT, syscall.SIGTERM)
 
 	fmt.Println("20-20-20 timer started!")
 	fmt.Println("Press Ctrl+C to quit.")
 
-	go t.Start()
+	go t.Start(ctx)
 
 	<-quitChan
-	fmt.Println("\nApp quit gracefully.")
+
+	fmt.Println("\nQuitting application...")
 }
 
 func createDefaultConfig(configPath string) error {
@@ -110,7 +116,7 @@ func createDefaultConfig(configPath string) error {
 			BreakSeconds:    20,
 		},
 		Notifications: config.NotificationConfig{
-			UseAlert: false,
+			UseAlert: true,
 		},
 	}
 
