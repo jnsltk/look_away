@@ -1,12 +1,12 @@
 package timer
 
 import (
-	"fmt"
 	"time"
+	"github.com/gen2brain/beeep"
 )
 
 type Timer struct {
-	Duration      time.Duration
+	TimerDuration      time.Duration
 	BreakDuration time.Duration
 }
 
@@ -15,12 +15,11 @@ func NewTimer(duration time.Duration, breakDuration time.Duration) *Timer {
 }
 
 func (t Timer) Start() {
-	durations := []time.Duration{t.Duration, t.BreakDuration}
-	functions := []func(){
-		func() { fmt.Println("done") }, 
-		func() { fmt.Println("break done") },
+	durations := []time.Duration{t.TimerDuration, t.BreakDuration}
+	notificationMessages := []string{
+		"Time to rest your eyes! Look at least 20 ft (~6m) away for at least 20 seconds!", 
+		"That's enough, go back to work!",
 	}
-
 	var timer *time.Timer
 	defer func() {
 		if timer != nil {
@@ -32,7 +31,7 @@ func (t Timer) Start() {
 		for i, duration := range durations {
 			timer = time.NewTimer(duration)
 			<-timer.C
-			functions[i]()
+			beeep.Alert("look_away", notificationMessages[i], "")
 		}
 	}
 }
