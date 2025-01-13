@@ -23,6 +23,7 @@ func main() {
 	flag.IntVar(&breakDuration, "break_duration", 0, "Break duration in seconds (overrides config)")
 	useAlert = flag.Bool("alert", false, "Use alert instead of notification (overrides config)")
 	flag.BoolVar(&help, "help", false, "Show help message")
+	flag.BoolVar(&help, "h", false, "Show help message")
 
 	flag.Parse()
 
@@ -64,8 +65,6 @@ func main() {
 
 	fmt.Println("20-20-20 timer started!")
 	fmt.Println("Press Ctrl+C to quit.")
-
-	fmt.Println(cfg)
 
 	go t.Start()
 
