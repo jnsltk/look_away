@@ -50,7 +50,7 @@ notifications:
 To find your default config location type:
 
 ```sh
-look_away --config-location
+look_away --config-path
 ```
 
 Tested only on Mac and Linux.
